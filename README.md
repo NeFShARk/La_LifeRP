@@ -7,8 +7,11 @@ Pour le support sur le scripting de FiveM en général.
 
 **N'HÉSITEZ PAS À CONTRIBUER AVEC LES PULL REQUESTS!**
 
+**SI JAMAIS VOUS VOYEZ QU'IL MANQUE UNE SOURCE/CRÉDITS CONTACTEZ MOI!**
+
 ## Information
 
+- **Linux roule bien finalement. Tout est sensé fonctionner. Assurez vous de bien installer tout comme il le faut. (Mono, etc)**
 - Il est recommandé de savoir un minimum coder pour utiliser nos fichiers.
 - LES **SOURCES C#** SORTIONT SOUS PEU!
 - Nous allons sortir les gros patchs aux 2 semaines environ.
