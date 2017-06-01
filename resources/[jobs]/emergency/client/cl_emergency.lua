@@ -66,9 +66,9 @@ local playerInComaIsADoc = false
 
 Citizen.CreateThread(
 	function()
-		local x = 1155.26
-		local y = -1520.82
-		local z = 34.84
+		local x = 307.17541503906
+		local y = -1453.8060302734
+		local z = 29.966695785522
 
 		while true do
 			Citizen.Wait(1)
@@ -96,9 +96,9 @@ end)
 
 Citizen.CreateThread(
 	function()
-		local x = 1140.41
-		local y = -1608.15
-		local z = 34.6939
+		local x = 324.94091796875
+		local y = -1474.1514892578
+		local z = 29.804544448853
 
 		while true do
 			Citizen.Wait(1)
@@ -258,13 +258,15 @@ function GetService()
 	local playerPed = GetPlayerPed(-1)
 
 	if jobId ~= 13 then
-		SendNotification(txt[lang]['notDoc'])
+	SendNotification(txt[lang]['notDoc'])
 		return
 	end
 
 	if isInService then
 		SendNotification(txt[lang]['stopService'])
+		TriggerServerEvent("vmenu:lastChar") --EN TEST REDONNE LES VETEMENT
 		TriggerServerEvent('es_em:sv_setService', 0)
+		--TriggerServerEvent("jobssystem:jobs", 1) --REPASSER EN CHOMEUR A TEST
 	else
 		SendNotification(txt[lang]['startService'])
 		TriggerServerEvent('es_em:sv_setService', 1)
@@ -284,6 +286,7 @@ function GetService()
 	SetPedComponentVariation(playerPed, 4, 61, 5, 0)
 	SetPedComponentVariation(playerPed, 3, 109, 0, 0)
 	SetPedComponentVariation(playerPed, 6, 25, 0, 0)
+	end
 end
 
 --[[

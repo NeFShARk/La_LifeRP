@@ -50,6 +50,8 @@ local txt = {
 local isDead = false
 local isKO = false
 local isRes = false
+local emergencyComes = false
+
 
 --[[
 ################################
@@ -142,6 +144,8 @@ AddEventHandler('baseevents:onPlayerKilled',
 RegisterNetEvent('es_em:cl_sendMessageToPlayerInComa')
 AddEventHandler('es_em:cl_sendMessageToPlayerInComa',
 	function()
+
+		emergencyComes = true
 		SendNotification(txt[lang]['ambIsComming'])
 	end
 )
@@ -159,6 +163,13 @@ AddEventHandler('es_em:cl_resurectPlayer',
 			SetEntityHealth(playerPed, GetPedMaxHealth(playerPed)/2)
 			ClearPedTasksImmediately(playerPed)
 		end
+	end
+)
+
+RegisterNetEvent('es_em:cl_respawn')
+AddEventHandler('es_em:cl_respawn',
+	function()
+		ResPlayer()
 	end
 )
 
@@ -183,9 +194,12 @@ end
 function ResPlayer()
 	isRes = true
 	TriggerServerEvent('es_em:sv_removeMoney')
-	TriggerServerEvent("item:reset")
+	TriggerEvent("item:reset")
+	TriggerServerEvent("vmenu:lastChar")
+	-- TriggerServerEvent("skin_customization:SpawnPlayer") À CHANGER POUR LA TENUE AU RESPAWN.
+
 	RemoveAllPedWeapons(GetPlayerPed(-1),true)
-	NetworkResurrectLocalPlayer(357.757, -597.202, 28.6314, true, true, false)
+	NetworkResurrectLocalPlayer(307.5803527832, -1433.3092041016, 29.966968536377, true, true, false)
 end
 
 function OnPlayerDied(playerId, reasonID, reason)
@@ -218,12 +232,20 @@ function OnPlayerDied(playerId, reasonID, reason)
 		function()
 			local emergencyCalled = false
 
+			local notifReceivedAt = nil
+
 			while not isRes do
 				Citizen.Wait(1)
+
+
+
 				if (IsControlJustReleased(1, Keys['E'])) and not emergencyCalled then
 					if not isDocConnected then
 						ResPlayer()
 					else
+
+						notifReceivedAt = GetGameTimer()
+
 						SendNotification(txt[lang]['youCallAmb'])
 						TriggerServerEvent('es_em:sendEmergency', reason, GetPlayerServerId(PlayerId()), pos.x, pos.y, pos.z)
 					end
@@ -232,10 +254,20 @@ function OnPlayerDied(playerId, reasonID, reason)
 				elseif (IsControlJustReleased(1, Keys['X'])) then
 					ResPlayer()
 				end
+
+
+				if (GetTimeDifference(GetGameTimer(), notifReceivedAt) > 15000) and not emergencyComes and emergencyCalled then
+					SendNotification(txt[lang]['callAmb'])
+					emergencyCalled = false
+				end
+
+
 			end
 
 			isDocConnected = nil
 			isRes = false
+			emergencyComes = false
+
 	end)
 end
 
